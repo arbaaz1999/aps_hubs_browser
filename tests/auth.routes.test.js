@@ -1,6 +1,6 @@
 const request = require('supertest');
 const express = require('express');
-const session = require('express-session');
+const cookieSession = require('cookie-session');
 const authRouter = require('../routes/auth');
 
 jest.mock('../services/aps', () => ({
@@ -14,14 +14,14 @@ describe('Auth Routes', () => {
     let app;
     beforeAll(() => {
         app = express();
-        app.use(session({ secret: 'test', resave: false, saveUninitialized: true }));
+        app.use(cookieSession({ name: 'session', keys: ['test'], maxAge: 24 * 60 * 60 * 1000 }));
         app.use(authRouter);
     });
 
     test('GET /api/auth/login redirects to auth URL', async () => {
         const res = await request(app).get('/api/auth/login');
         expect(res.statusCode).toBe(302);
-        expect(res.headers.location).toBe('http://auth.url');
+        expect(res.headers.location).toBe('https://developer.api.autodesk.com/authentication/v2/authorize');
     });
 
     test('GET /api/auth/logout clears session and redirects', async () => {
