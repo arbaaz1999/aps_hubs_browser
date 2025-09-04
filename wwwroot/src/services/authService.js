@@ -1,9 +1,7 @@
-import { customFetch } from "./customFetch";
-
 class AuthService {
     async getAccessToken(callback) {
         try {
-            const resp = await customFetch('/api/auth/token');
+            const resp = await fetch('/api/auth/token');
             if (!resp.ok) {
                 throw new Error(await resp.text());
             }
@@ -16,7 +14,7 @@ class AuthService {
     }
 
     async getProfile() {
-        const resp = await customFetch('/api/auth/profile');
+        const resp = await fetch('/api/auth/profile');
         if (!resp.ok) {
             throw new Error('Not authenticated');
         }

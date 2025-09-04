@@ -1,8 +1,7 @@
-import { customFetch } from "./customFetch";
 
 class HubsService {
     async getJSON(url) {
-        const resp = await customFetch(url);
+        const resp = await fetch(url);
         if (!resp.ok) {
             // alert('Could not load tree data. See console for more details.');
             console.error(await resp.text());
